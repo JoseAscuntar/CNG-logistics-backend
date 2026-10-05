@@ -1,0 +1,24 @@
+{
+  "name": "cng-logistics-backend",
+  "version": "1.0.0",
+  "description": "The backend (Express and PostgreSQL) of the CNG SAS logistics project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoseAscuntar/CNG-logistics-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JoseAscuntar/CNG-logistics-backend/issues"
+  },
+  "homepage": "https://github.com/JoseAscuntar/CNG-logistics-backend#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
