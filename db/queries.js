@@ -51,4 +51,35 @@ async function getContractById(id) {
     return contracts.find(contract => contract.id === id);
 }
 
-module.exports = { getSupplierById, getProductById, getPresentationById, getClientById, getContractById };
+async function getAllSuppliers() {
+    return suppliers;
+}
+
+async function getAllProducts() {
+    return products;
+}
+
+async function getAllPresentations() {
+    return presentations;
+}
+
+async function getAllClients() {
+    return clients;
+}
+
+async function getAllContracts() {
+    return contracts;
+}
+
+module.exports = { 
+    getSupplierById, 
+    getProductById, 
+    getPresentationById, 
+    getClientById, 
+    getContractById, 
+    getAllSuppliers, 
+    getAllProducts, 
+    getAllPresentations, 
+    getAllClients, 
+    getAllContracts
+};
