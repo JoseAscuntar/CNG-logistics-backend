@@ -30,3 +30,25 @@ const contracts = [
     {id: 3, name: "Licitación 3", legalFigure: "UT Corazón de obrero", clientId: 3},
 ];
 
+
+async function getSupplierById(id) {
+    return suppliers.find(supplier => supplier.id === id);
+}
+
+async function getProductById(id) {
+    return products.find(product => product.id === id);
+}
+
+async function getPresentationById(id) {
+    return presentations.find(presentation => presentation.id === id);
+}
+
+async function getClientById(id) {
+    return clients.find(client => client.id === id);
+}
+
+async function getContractById(id) {
+    return contracts.find(contract => contract.id === id);
+}
+
+module.exports = { getSupplierById, getProductById, getPresentationById, getClientById, getContractById };
