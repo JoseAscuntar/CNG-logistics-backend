@@ -17,6 +17,11 @@ app.use("/clients", clientRouter);
 
 app.get("/", (req, res) => res.send("Hello, world!"));
 
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(err.statusCode || 500).json({message: err.message});
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, error => {
     if (error) {
