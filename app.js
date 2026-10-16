@@ -1,7 +1,19 @@
 const express = require("express");
 const app = express();
+const supplierRouter = require("./routes/supplierRouter.js");
+const productRouter = require("./routes/productRouter.js");
+const presentationRouter = require("./routes/presentationRouter.js");
+const contractRouter = require("./routes/contractRouter.js");
+const clientRouter = require("./routes/clientRouter.js");
+
 const { loadEnvFile } = require("node:process");
 loadEnvFile();
+
+app.use("/suppliers", supplierRouter);
+app.use("/products", productRouter);
+app.use("/presentations", presentationRouter);
+app.use("/contracts", contractRouter);
+app.use("/clients", clientRouter);
 
 app.get("/", (req, res) => res.send("Hello, world!"));
 
