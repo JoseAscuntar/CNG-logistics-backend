@@ -1,4 +1,6 @@
 const express = require("express");
+const cors = require("cors");
+
 const app = express();
 const supplierRouter = require("./routes/supplierRouter.js");
 const productRouter = require("./routes/productRouter.js");
@@ -8,6 +10,9 @@ const clientRouter = require("./routes/clientRouter.js");
 
 const { loadEnvFile } = require("node:process");
 loadEnvFile();
+
+const allowedOrigins = [process.env.FRONTEND_URL];
+app.use(cors({ origin: allowedOrigins }));
 
 app.use("/suppliers", supplierRouter);
 app.use("/products", productRouter);
