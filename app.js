@@ -1,3 +1,6 @@
+const { loadEnvFile } = require("node:process");
+loadEnvFile();
+
 const express = require("express");
 const cors = require("cors");
 
@@ -7,9 +10,6 @@ const productRouter = require("./routes/productRouter.js");
 const presentationRouter = require("./routes/presentationRouter.js");
 const contractRouter = require("./routes/contractRouter.js");
 const clientRouter = require("./routes/clientRouter.js");
-
-const { loadEnvFile } = require("node:process");
-loadEnvFile();
 
 const allowedOrigins = [process.env.FRONTEND_URL];
 app.use(cors({ origin: allowedOrigins }));
