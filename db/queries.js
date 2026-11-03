@@ -1,8 +1,4 @@
-const suppliers = [
-    {id: 1, name: "Panificadora Don Carlos S.A.S", nit: "956845320-4", city: "San Gil"},
-    {id: 2, name: "Alimentos La Esquina S.A.S", nit: "301562487-5", city: "Bucaramanga"},
-    {id: 3, name: "La Buena Cosecha S.A.S", nit: "685321752-2", city: "Bogota"},
-];
+const pool = require("./pool.js");
 
 const products = [
     {id: 1, name: "Muffin"},
@@ -30,9 +26,9 @@ const contracts = [
     {id: 3, name: "Licitación 3", legalFigure: "UT Corazón de obrero", clientId: 3},
 ];
 
-
 async function getSupplierById(id) {
-    return suppliers.find(supplier => supplier.id === id);
+    const { rows } = await pool.query("SELECT * FROM suppliers WHERE id = $1", [id]);
+    return rows[0]; // Using the [0] so that !supplier in the supplier controller is true if the id is missing and the 404 message is actually sent
 }
 
 async function getProductById(id) {
@@ -52,7 +48,8 @@ async function getContractById(id) {
 }
 
 async function getAllSuppliers() {
-    return suppliers;
+    const { rows } = await pool.query("SELECT * FROM suppliers WHERE active = TRUE");
+    return rows;
 }
 
 async function getAllProducts() {
