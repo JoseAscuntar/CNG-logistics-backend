@@ -8,8 +8,12 @@ async function getAllSuppliers(req, res) {
 
 async function getSupplierById(req, res) {
     const { supplierId } = req.params;
-    const supplier = await db.getSupplierById(Number(supplierId));
+    const id = Number(supplierId);
+    if (!Number.isInteger(id) || id <= 0) {
+        throw new CustomNotFoundError("Supplier not found");
+    }
 
+    const supplier = await db.getSupplierById(id);
     if (!supplier) {
         throw new CustomNotFoundError("Supplier not found");
     }
