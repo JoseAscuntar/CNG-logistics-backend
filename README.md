@@ -10,3 +10,5 @@ There are three environment variables stored in `.env` (a file at the project ro
 
 ## Database Setup
 In order to create the tables in an existing database you can use the command `node ./db/populatedb.js postgresql://<role>:<password>@<host>:<port>/<database>`. The URL is an argument of that command and not simply an environment variable so that it can be used in production as well (the production host can't handle it because the program is never run by it; instead, it is run on your own computer). Also, it is totally safe to run it more than once because the tables are only created if they didn't exist already.
+
+Then, in order to seed the tables with fake data, you can run `node ./db/seeddb.js postgresql://<role>:<password>@<host>:<port>/<database>`. This is only used in development, since production would use real CNG data instead. This one is also safe to run more than once, because there's a `UNIQUE` constraint for almost every table which stops the code from running; the whole script is cancelled (no rows get inserted) and throws an error.
