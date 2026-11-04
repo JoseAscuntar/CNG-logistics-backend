@@ -8,8 +8,12 @@ async function getAllProducts(req, res) {
 
 async function getProductById(req, res) {
     const { productId } = req.params;
-    const product = await db.getProductById(Number(productId));
+    const id = Number(productId);
+    if (!Number.isInteger(id) || id <= 0) {
+        throw new CustomNotFoundError("Product not found");
+    }
 
+    const product = await db.getProductById(id);
     if (!product) {
         throw new CustomNotFoundError("Product not found");
     }

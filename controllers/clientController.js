@@ -8,8 +8,12 @@ async function getAllClients(req, res) {
 
 async function getClientById(req, res) {
     const { clientId } = req.params;
-    const client = await db.getClientById(Number(clientId));
+    const id = Number(clientId);
+    if (!Number.isInteger(id) || id <= 0) {
+        throw new CustomNotFoundError("Client not found");
+    }
 
+    const client = await db.getClientById(id);
     if (!client) {
         throw new CustomNotFoundError("Client not found");
     }

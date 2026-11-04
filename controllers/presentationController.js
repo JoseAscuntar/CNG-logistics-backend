@@ -8,8 +8,12 @@ async function getAllPresentations(req, res) {
 
 async function getPresentationById(req, res) {
     const { presentationId } = req.params;
-    const presentation = await db.getPresentationById(Number(presentationId));
+    const id = Number(presentationId);
+    if (!Number.isInteger(id) || id <= 0) {
+        throw new CustomNotFoundError("Presentation not found");
+    }
 
+    const presentation = await db.getPresentationById(id);
     if (!presentation) {
         throw new CustomNotFoundError("Presentation not found");
     }
