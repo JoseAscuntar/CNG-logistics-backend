@@ -2,6 +2,7 @@ const makeGetAll = require("./functionFactories/makeGetAll.js");
 const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator");
 const db = require("../db/queries.js");
+const CustomConflictError = require("../errors/CustomConflictError.js");
 
 const getAllSuppliers = makeGetAll("suppliers");
 const getSupplierById = makeGetById("supplier");
@@ -49,8 +50,15 @@ const createSupplier = [validateSupplier, async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json(errors.array());
     }
-    const newSupplier = await db.insertSupplier(matchedData(req));
-    return res.status(201).json(newSupplier);
+    try {
+        const newSupplier = await db.insertSupplier(matchedData(req));
+        return res.status(201).json(newSupplier);
+    } catch (err) {
+        if (err.code === "23505") {
+            throw new CustomConflictError("Ya existe un proveedor con ese NIT");
+        }
+        throw err;
+    }
 }];
 
 
