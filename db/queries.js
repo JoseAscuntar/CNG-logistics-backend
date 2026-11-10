@@ -50,6 +50,16 @@ async function getAllContracts() {
     return rows;
 }
 
+async function insertSupplier({ name, nit, contact, address, telephone, city, email }) {
+    const { rows } = await pool.query(`
+        INSERT INTO suppliers (name, nit, contact, address, telephone, city, email)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING *;
+        `, 
+        [name, nit, contact, address, telephone, city, email])
+    return rows[0];
+}
+
 module.exports = { 
     getSupplierById, 
     getProductById, 
@@ -60,5 +70,6 @@ module.exports = {
     getAllProducts, 
     getAllPresentations, 
     getAllClients, 
-    getAllContracts
+    getAllContracts,
+    insertSupplier
 };
