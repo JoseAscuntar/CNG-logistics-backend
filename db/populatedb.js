@@ -51,14 +51,20 @@ CREATE TABLE IF NOT EXISTS products (
   active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
+CREATE TABLE IF NOT EXISTS units (
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  name VARCHAR(10) NOT NULL UNIQUE,
+  active BOOLEAN NOT NULL DEFAULT TRUE
+);
+
 CREATE TABLE IF NOT EXISTS presentations (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   product_id INTEGER NOT NULL,
   amount INTEGER NOT NULL,
-  unit VARCHAR(10) NOT NULL,
+  unit_id INTEGER NOT NULL,
   active BOOLEAN NOT NULL DEFAULT TRUE,
 
-  CONSTRAINT valid_units CHECK (unit IN ('g', 'ml', 'lb')),
+  CONSTRAINT presentations_to_unit FOREIGN KEY (unit_id) REFERENCES units(id),
   CONSTRAINT presentations_to_product FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
@@ -112,7 +118,7 @@ CREATE TABLE IF NOT EXISTS change_requests (
   decided_at TIMESTAMP,
   reason TEXT,
 
-  CONSTRAINT valid_entities CHECK (entity IN ('users', 'suppliers', 'products', 'presentations', 'clients', 'contracts', 'legal_entities', 'supplier_presentations', 'presentation_contracts')),
+  CONSTRAINT valid_entities CHECK (entity IN ('users', 'suppliers', 'products', 'units', 'presentations', 'clients', 'contracts', 'legal_entities', 'supplier_presentations', 'presentation_contracts')),
   CONSTRAINT valid_actions CHECK (action IN ('create', 'edit', 'deactivate', 'reactivate')),
   CONSTRAINT valid_statuses CHECK (status IN ('pending', 'approved', 'rejected')),
   CONSTRAINT change_requests_to_user_request FOREIGN KEY (requested_by) REFERENCES users(id),

@@ -27,14 +27,20 @@ VALUES
   ('Pan de Chocolate'),
   ('Leche');
 
-INSERT INTO presentations (product_id, amount, unit)
+INSERT INTO units (name)
 VALUES
-  (1, 30, 'g'),
-  (1, 50, 'g'),
-  (1, 70, 'g'),
-  (2, 20, 'g'),
-  (2, 50, 'g'),
-  (3, 1000, 'ml');
+  ('g'),
+  ('ml'),
+  ('lb');
+
+INSERT INTO presentations (product_id, amount, unit_id)
+VALUES
+  (1, 30, 1),
+  (1, 50, 1),
+  (1, 70, 1),
+  (2, 20, 1),
+  (2, 50, 1),
+  (3, 1000, 2);
 
 INSERT INTO suppliers (name, nit, contact, address, telephone, city, email)
 VALUES
