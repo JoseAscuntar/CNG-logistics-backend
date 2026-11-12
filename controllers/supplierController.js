@@ -3,8 +3,10 @@ const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator");
 const db = require("../db/queries.js");
 const CustomConflictError = require("../errors/CustomConflictError.js");
-const { CREATED, BAD_REQUEST } = require("../constants/httpStatusCodes.js");
+const CustomNotFoundError = require("../errors/CustomNotFoundError.js");
+const { CREATED, BAD_REQUEST, OK } = require("../constants/httpStatusCodes.js");
 const { UNIQUE_VIOLATION } = require("../constants/postgresErrorCodes.js");
+const { INTEGER_MAX } = require("../constants/limits.js");
 
 const getAllSuppliers = makeGetAll("suppliers");
 const getSupplierById = makeGetById("supplier");
@@ -70,9 +72,35 @@ const createSupplier = [validateSupplier, async (req, res) => {
     }
 }];
 
+const editSupplier = [validateSupplier, async (req, res) => {
+    const id = Number(req.params.supplierId);
+    if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
+        throw new CustomNotFoundError("Supplier not found");
+    }
+    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(BAD_REQUEST).json(errors.array());
+    }
+
+    try {
+        const updatedSupplier = await db.updateSupplier(matchedData(req), id);
+        if (!updatedSupplier) {
+            throw new CustomNotFoundError("Supplier not found");
+        }
+        return res.status(OK).json(updatedSupplier);
+    } catch (err) {
+        if (err.code === UNIQUE_VIOLATION) {
+            throw new CustomConflictError("Ya existe un proveedor con ese NIT");
+        }
+        throw err;
+    }
+}];
+
 
 module.exports = {
     getAllSuppliers,
     getSupplierById,
-    createSupplier
+    createSupplier,
+    editSupplier
 }

@@ -140,6 +140,17 @@ async function insertLegalEntity({ name, nit }) {
     return rows[0];
 }
 
+async function updateSupplier({ name, nit, contact, address, telephone, city, email}, id) {
+    const { rows } = await pool.query(`
+        UPDATE suppliers 
+        SET (name, nit, contact, address, telephone, city, email) = ($1, $2, $3, $4, $5, $6, $7)
+        WHERE id = $8
+        RETURNING *;
+        `, 
+        [name, nit, contact, address, telephone, city, email, id])
+    return rows[0];
+}
+
 module.exports = { 
     getSupplierById, 
     getProductById, 
@@ -162,4 +173,5 @@ module.exports = {
     insertClient,
     insertUnit,
     insertLegalEntity,
+    updateSupplier,
 };
