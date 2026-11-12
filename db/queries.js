@@ -25,6 +25,16 @@ async function getContractById(id) {
     return rows[0];
 }
 
+async function getUnitById(id) {
+    const { rows } = await pool.query("SELECT * FROM units WHERE id = $1", [id]);
+    return rows[0];
+}
+
+async function getLegalEntityById(id) {
+    const { rows } = await pool.query("SELECT * FROM legal_entities WHERE id = $1", [id]);
+    return rows[0];
+}
+
 async function getAllSuppliers() {
     const { rows } = await pool.query("SELECT * FROM suppliers WHERE active = TRUE");
     return rows;
@@ -47,6 +57,16 @@ async function getAllClients() {
 
 async function getAllContracts() {
     const { rows } = await pool.query("SELECT * FROM contracts WHERE active = TRUE");
+    return rows;
+}
+
+async function getAllUnits() {
+    const { rows } = await pool.query("SELECT * FROM units WHERE active = TRUE");
+    return rows;
+}
+
+async function getAllLegalEntities() {
+    const { rows } = await pool.query("SELECT * FROM legal_entities WHERE active = TRUE");
     return rows;
 }
 
@@ -100,20 +120,46 @@ async function insertClient({ name, nit, contact, address, telephone, city, emai
     return rows[0];
 }
 
+async function insertUnit({ name }) {
+    const { rows } = await pool.query(`
+        INSERT INTO units (name)
+        VALUES ($1)
+        RETURNING *;
+        `, 
+        [name])
+    return rows[0];
+}
+
+async function insertLegalEntity({ name, nit }) {
+    const { rows } = await pool.query(`
+        INSERT INTO legal_entities (name, nit)
+        VALUES ($1, $2)
+        RETURNING *;
+        `, 
+        [name, nit])
+    return rows[0];
+}
+
 module.exports = { 
     getSupplierById, 
     getProductById, 
     getPresentationById, 
     getClientById, 
     getContractById, 
+    getUnitById,
+    getLegalEntityById,
     getAllSuppliers, 
     getAllProducts, 
     getAllPresentations, 
     getAllClients, 
     getAllContracts,
+    getAllUnits,
+    getAllLegalEntities,
     insertSupplier,
     insertProduct,
     insertPresentation,
     insertContract,
     insertClient,
+    insertUnit,
+    insertLegalEntity,
 };

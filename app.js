@@ -10,6 +10,8 @@ const productRouter = require("./routes/productRouter.js");
 const presentationRouter = require("./routes/presentationRouter.js");
 const contractRouter = require("./routes/contractRouter.js");
 const clientRouter = require("./routes/clientRouter.js");
+const unitRouter = require("./routes/unitRouter.js");
+const legalEntityRouter = require("./routes/legalEntityRouter.js");
 const { INTERNAL_SERVER_ERROR } = require("./constants/httpStatusCodes.js");
 
 app.use(express.json());
@@ -22,6 +24,8 @@ app.use("/products", productRouter);
 app.use("/presentations", presentationRouter);
 app.use("/contracts", contractRouter);
 app.use("/clients", clientRouter);
+app.use("/units", unitRouter);
+app.use("/legal-entities", legalEntityRouter);
 
 app.get("/", (req, res) => res.send("Hello, world!"));
 
