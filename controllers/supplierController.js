@@ -3,6 +3,8 @@ const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator");
 const db = require("../db/queries.js");
 const CustomConflictError = require("../errors/CustomConflictError.js");
+const { CREATED, BAD_REQUEST } = require("../constants/httpStatusCodes.js");
+const { UNIQUE_VIOLATION } = require("../constants/postgresErrorCodes.js");
 
 const getAllSuppliers = makeGetAll("suppliers");
 const getSupplierById = makeGetById("supplier");
@@ -55,13 +57,13 @@ const validateSupplier = [
 const createSupplier = [validateSupplier, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json(errors.array());
+        return res.status(BAD_REQUEST).json(errors.array());
     }
     try {
         const newSupplier = await db.insertSupplier(matchedData(req));
-        return res.status(201).json(newSupplier);
+        return res.status(CREATED).json(newSupplier);
     } catch (err) {
-        if (err.code === "23505") {
+        if (err.code === UNIQUE_VIOLATION) {
             throw new CustomConflictError("Ya existe un proveedor con ese NIT");
         }
         throw err;

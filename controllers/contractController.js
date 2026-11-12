@@ -3,7 +3,9 @@ const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator");
 const db = require("../db/queries.js");
 const CustomBadRequestError = require("../errors/CustomBadRequestError.js");
-const { INTEGER_MAX } = require("../constants.js");
+const { BAD_REQUEST, CREATED } = require("../constants/httpStatusCodes.js");
+const { FOREIGN_KEY_VIOLATION } = require("../constants/postgresErrorCodes.js");
+const { INTEGER_MAX } = require("../constants/limits.js");
 
 const getAllContracts = makeGetAll("contracts");
 const getContractById = makeGetById("contract");
@@ -27,13 +29,13 @@ const validateContract = [
 const createContract = [validateContract, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json(errors.array());
+        return res.status(BAD_REQUEST).json(errors.array());
     }
     try {
         const newContract = await db.insertContract(matchedData(req));
-        return res.status(201).json(newContract);
+        return res.status(CREATED).json(newContract);
     } catch (err) {
-        if (err.code === "23503") {
+        if (err.code === FOREIGN_KEY_VIOLATION) {
             if (err.constraint === "contracts_to_legal_entity") {
                 throw new CustomBadRequestError("La entidad legal seleccionada no existe");
             } else if (err.constraint === "contracts_to_client") {

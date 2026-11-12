@@ -2,6 +2,7 @@ const makeGetAll = require("./functionFactories/makeGetAll.js");
 const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator"); 
 const db = require("../db/queries.js");
+const { BAD_REQUEST, CREATED } = require("../constants/httpStatusCodes.js");
 
 const getAllProducts = makeGetAll("products");
 const getProductById = makeGetById("product");
@@ -17,10 +18,10 @@ const validateProduct = [
 const createProduct = [validateProduct, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json(errors.array());
+        return res.status(BAD_REQUEST).json(errors.array());
     }
     const newProduct = await db.insertProduct(matchedData(req));
-    return res.status(201).json(newProduct);
+    return res.status(CREATED).json(newProduct);
 }];
 
 module.exports = {

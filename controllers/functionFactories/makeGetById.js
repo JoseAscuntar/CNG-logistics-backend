@@ -1,7 +1,6 @@
+const { INTEGER_MAX } = require("../../constants/limits.js");
 const db = require("../../db/queries.js");
 const CustomNotFoundError = require("../../errors/CustomNotFoundError.js");
-
-const INTEGER_MAX = 2147483647; // It is the max ID our tables can have on PostgreSQL, since they are INTEGERs.
 
 function makeGetById(entity) {
     const capitalizedEntity = entity[0].toUpperCase() + entity.slice(1);

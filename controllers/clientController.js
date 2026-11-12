@@ -3,6 +3,8 @@ const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator");
 const db = require("../db/queries.js");
 const CustomConflictError = require("../errors/CustomConflictError.js");
+const { BAD_REQUEST, CREATED } = require("../constants/httpStatusCodes.js");
+const { UNIQUE_VIOLATION } = require("../constants/postgresErrorCodes.js");
 
 const getAllClients = makeGetAll("clients");
 const getClientById = makeGetById("client");
@@ -63,13 +65,13 @@ const validateClient = [
 const createClient = [validateClient, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json(errors.array());
+        return res.status(BAD_REQUEST).json(errors.array());
     }
     try {
         const newClient = await db.insertClient(matchedData(req));
-        return res.status(201).json(newClient);
+        return res.status(CREATED).json(newClient);
     } catch (err) {
-        if (err.code === "23505") {
+        if (err.code === UNIQUE_VIOLATION) {
             throw new CustomConflictError("Ya existe un cliente con ese NIT");
         }
         throw err;
