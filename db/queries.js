@@ -60,6 +60,46 @@ async function insertSupplier({ name, nit, contact, address, telephone, city, em
     return rows[0];
 }
 
+async function insertProduct({ name }) {
+    const { rows } = await pool.query(`
+        INSERT INTO products (name)
+        VALUES ($1)
+        RETURNING *;
+        `, 
+        [name])
+    return rows[0];
+}
+
+async function insertPresentation({ product_id, amount, unit_id}) {
+    const { rows } = await pool.query(`
+        INSERT INTO presentations (product_id, amount, unit_id)
+        VALUES ($1, $2, $3)
+        RETURNING *;
+        `, 
+        [product_id, amount, unit_id])
+    return rows[0];
+}
+
+async function insertContract({ name, legal_entity_id, client_id}) {
+    const { rows } = await pool.query(`
+        INSERT INTO contracts (name, legal_entity_id, client_id)
+        VALUES ($1, $2, $3)
+        RETURNING *;
+        `, 
+        [name, legal_entity_id, client_id])
+    return rows[0];
+}
+
+async function insertClient({ name, nit, contact, address, telephone, city, email, replenishment_percentage}) {
+    const { rows } = await pool.query(`
+        INSERT INTO clients (name, nit, contact, address, telephone, city, email, replenishment_percentage)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING *;
+        `, 
+        [name, nit, contact, address, telephone, city, email, replenishment_percentage])
+    return rows[0];
+}
+
 module.exports = { 
     getSupplierById, 
     getProductById, 
@@ -71,5 +111,9 @@ module.exports = {
     getAllPresentations, 
     getAllClients, 
     getAllContracts,
-    insertSupplier
+    insertSupplier,
+    insertProduct,
+    insertPresentation,
+    insertContract,
+    insertClient,
 };
