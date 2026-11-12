@@ -2,8 +2,8 @@ const makeGetAll = require("./functionFactories/makeGetAll.js");
 const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator");
 const db = require("../db/queries.js");
-
-const INTEGER_MAX = 2147483647; // Max value an integer can hold on PostgreSQL.
+const CustomBadRequestError = require("../errors/CustomBadRequestError.js");
+const { INTEGER_MAX } = require("../constants.js");
 
 const getAllContracts = makeGetAll("contracts");
 const getContractById = makeGetById("contract");
@@ -29,8 +29,19 @@ const createContract = [validateContract, async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json(errors.array());
     }
-    const newContract = await db.insertContract(matchedData(req));
-    return res.status(201).json(newContract);
+    try {
+        const newContract = await db.insertContract(matchedData(req));
+        return res.status(201).json(newContract);
+    } catch (err) {
+        if (err.code === "23503") {
+            if (err.constraint === "contracts_to_legal_entity") {
+                throw new CustomBadRequestError("La entidad legal seleccionada no existe");
+            } else if (err.constraint === "contracts_to_client") {
+                throw new CustomBadRequestError("El cliente seleccionado no existe");
+            }
+        }
+        throw err;
+    }
 }];
 
 module.exports = {

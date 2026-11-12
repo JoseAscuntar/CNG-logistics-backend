@@ -2,6 +2,7 @@ const makeGetAll = require("./functionFactories/makeGetAll.js");
 const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator"); 
 const db = require("../db/queries.js");
+const CustomBadRequestError = require("../errors/CustomBadRequestError.js");
 
 const INTEGER_MAX = 2147483647; // Max value an integer can hold on PostgreSQL.
 
@@ -29,8 +30,19 @@ const createPresentation = [validatePresentation, async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json(errors.array());
     }
-    const newPresentation = await db.insertPresentation(matchedData(req));
-    return res.status(201).json(newPresentation);
+    try {
+        const newPresentation = await db.insertPresentation(matchedData(req));
+        return res.status(201).json(newPresentation);
+    } catch (err) {
+        if (err.code === "23503") {
+            if (err.constraint === "presentations_to_product") {
+                throw new CustomBadRequestError("El producto seleccionado no existe");
+            } else if (err.constraint === "presentations_to_unit") {
+                throw new CustomBadRequestError("La unidad seleccionada no existe");
+            }
+        }
+        throw err;
+    }
 }];
 
 module.exports = {
