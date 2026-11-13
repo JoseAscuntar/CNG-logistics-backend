@@ -20,8 +20,20 @@ async function insertClient({ name, nit, contact, address, telephone, city, emai
     return rows[0];
 }
 
+async function updateClient({ name, nit, contact, address, telephone, city, email, replenishment_percentage }, id) {
+    const { rows } = await pool.query(`
+        UPDATE clients
+        SET (name, nit, contact, address, telephone, city, email, replenishment_percentage) = ($1, $2, $3, $4, $5, $6, $7, $8)
+        WHERE id = $9
+        RETURNING *;
+        `, 
+        [name, nit, contact, address, telephone, city, email, replenishment_percentage, id])
+    return rows[0];
+}
+
 module.exports = {
     getClientById,
     getAllClients,
     insertClient,
+    updateClient,
 }

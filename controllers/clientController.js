@@ -3,8 +3,10 @@ const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator");
 const db = require("../db/queries/clientQueries.js");
 const CustomConflictError = require("../errors/CustomConflictError.js");
-const { BAD_REQUEST, CREATED } = require("../constants/httpStatusCodes.js");
+const CustomNotFoundError = require("../errors/CustomNotFoundError.js");
+const { BAD_REQUEST, CREATED, OK } = require("../constants/httpStatusCodes.js");
 const { UNIQUE_VIOLATION } = require("../constants/postgresErrorCodes.js");
+const { INTEGER_MAX } = require("../constants/limits.js");
 
 const getAllClients = makeGetAll(db.getAllClients);
 const getClientById = makeGetById("client", db.getClientById);
@@ -78,9 +80,34 @@ const createClient = [validateClient, async (req, res) => {
     }
 }];
 
+const editClient = [validateClient, async (req, res) => {
+    const id = Number(req.params.clientId);
+    if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
+        throw new CustomNotFoundError("Client not found");
+    }
+    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(BAD_REQUEST).json(errors.array());
+    }
+
+    try {
+        const updatedClient = await db.updateClient(matchedData(req), id);
+        if (!updatedClient) {
+            throw new CustomNotFoundError("Client not found");
+        }
+        return res.status(OK).json(updatedClient);
+    } catch (err) {
+        if (err.code === UNIQUE_VIOLATION) {
+            throw new CustomConflictError("Ya existe un cliente con ese NIT");
+        }
+        throw err;
+    }
+}];
 
 module.exports = {
     getAllClients,
     getClientById,
-    createClient
+    createClient,
+    editClient,
 }

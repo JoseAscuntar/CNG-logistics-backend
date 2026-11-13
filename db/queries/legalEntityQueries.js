@@ -20,8 +20,20 @@ async function insertLegalEntity({ name, nit }) {
     return rows[0];
 }
 
+async function updateLegalEntity({ name, nit }, id) {
+    const { rows } = await pool.query(`
+        UPDATE legal_entities
+        SET (name, nit) = ($1, $2)
+        WHERE id = $3
+        RETURNING *;
+        `, 
+        [name, nit, id])
+    return rows[0];
+}
+
 module.exports = {
     getLegalEntityById,
     getAllLegalEntities,
     insertLegalEntity,
+    updateLegalEntity,
 }

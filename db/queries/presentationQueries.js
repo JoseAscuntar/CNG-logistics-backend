@@ -20,8 +20,20 @@ async function insertPresentation({ product_id, amount, unit_id}) {
     return rows[0];
 }
 
+async function updatePresentation({ product_id, amount, unit_id }, id) {
+    const { rows } = await pool.query(`
+        UPDATE presentations 
+        SET (product_id, amount, unit_id) = ($1, $2, $3)
+        WHERE id = $4
+        RETURNING *;
+        `, 
+        [product_id, amount, unit_id, id])
+    return rows[0];
+}
+
 module.exports = {
     getPresentationById,
     getAllPresentations,
     insertPresentation,
+    updatePresentation,
 }

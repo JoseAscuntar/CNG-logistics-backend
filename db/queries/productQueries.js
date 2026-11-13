@@ -20,8 +20,20 @@ async function insertProduct({ name }) {
     return rows[0];
 }
 
+async function updateProduct({ name }, id) {
+    const { rows } = await pool.query(`
+        UPDATE products 
+        SET name = $1
+        WHERE id = $2
+        RETURNING *;
+        `, 
+        [name, id])
+    return rows[0];
+}
+
 module.exports = {
     getProductById,
     getAllProducts,
     insertProduct,
+    updateProduct,
 }

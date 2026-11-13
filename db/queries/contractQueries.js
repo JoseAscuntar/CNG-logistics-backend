@@ -20,8 +20,21 @@ async function insertContract({ name, legal_entity_id, client_id}) {
     return rows[0];
 }
 
+async function updateContract({ name, legal_entity_id, client_id }, id) {
+    const { rows } = await pool.query(`
+        UPDATE contracts
+        SET (name, legal_entity_id, client_id) = ($1, $2, $3)
+        WHERE id = $4
+        RETURNING *;
+        `, 
+        [name, legal_entity_id, client_id, id])
+    return rows[0];
+}
+
+
 module.exports = {
     getContractById,
     getAllContracts,
     insertContract,
+    updateContract,
 }
