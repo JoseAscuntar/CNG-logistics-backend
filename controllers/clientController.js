@@ -1,13 +1,13 @@
 const makeGetAll = require("./functionFactories/makeGetAll.js");
 const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator");
-const db = require("../db/queries.js");
+const db = require("../db/queries/clientQueries.js");
 const CustomConflictError = require("../errors/CustomConflictError.js");
 const { BAD_REQUEST, CREATED } = require("../constants/httpStatusCodes.js");
 const { UNIQUE_VIOLATION } = require("../constants/postgresErrorCodes.js");
 
-const getAllClients = makeGetAll("clients");
-const getClientById = makeGetById("client");
+const getAllClients = makeGetAll(db.getAllClients);
+const getClientById = makeGetById("client", db.getClientById);
 
 const validateClient = [
     body("name")

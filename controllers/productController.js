@@ -1,11 +1,11 @@
 const makeGetAll = require("./functionFactories/makeGetAll.js");
 const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator"); 
-const db = require("../db/queries.js");
+const db = require("../db/queries/productQueries.js");
 const { BAD_REQUEST, CREATED } = require("../constants/httpStatusCodes.js");
 
-const getAllProducts = makeGetAll("products");
-const getProductById = makeGetById("product");
+const getAllProducts = makeGetAll(db.getAllProducts);
+const getProductById = makeGetById("product", db.getProductById);
 
 const validateProduct = [
     body("name")

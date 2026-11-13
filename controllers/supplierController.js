@@ -1,15 +1,15 @@
 const makeGetAll = require("./functionFactories/makeGetAll.js");
 const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator");
-const db = require("../db/queries.js");
+const db = require("../db/queries/supplierQueries.js");
 const CustomConflictError = require("../errors/CustomConflictError.js");
 const CustomNotFoundError = require("../errors/CustomNotFoundError.js");
 const { CREATED, BAD_REQUEST, OK } = require("../constants/httpStatusCodes.js");
 const { UNIQUE_VIOLATION } = require("../constants/postgresErrorCodes.js");
 const { INTEGER_MAX } = require("../constants/limits.js");
 
-const getAllSuppliers = makeGetAll("suppliers");
-const getSupplierById = makeGetById("supplier");
+const getAllSuppliers = makeGetAll(db.getAllSuppliers);
+const getSupplierById = makeGetById("supplier", db.getSupplierById);
 
 const validateSupplier = [
     body("name")

@@ -1,14 +1,14 @@
 const makeGetAll = require("./functionFactories/makeGetAll.js");
 const makeGetById = require("./functionFactories/makeGetById.js");
 const { body, validationResult, matchedData } = require("express-validator"); 
-const db = require("../db/queries.js");
+const db = require("../db/queries/presentationQueries.js");
 const CustomBadRequestError = require("../errors/CustomBadRequestError.js");
 const { INTEGER_MAX } = require("../constants/limits.js");
 const { BAD_REQUEST, CREATED } = require("../constants/httpStatusCodes.js");
 const { FOREIGN_KEY_VIOLATION } = require("../constants/postgresErrorCodes.js");
 
-const getAllPresentations = makeGetAll("presentations");
-const getPresentationById = makeGetById("presentation");
+const getAllPresentations = makeGetAll(db.getAllPresentations);
+const getPresentationById = makeGetById("presentation", db.getPresentationById);
 
 const validatePresentation = [
     body("product_id")

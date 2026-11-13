@@ -1,10 +1,8 @@
 const { INTEGER_MAX } = require("../../constants/limits.js");
-const db = require("../../db/queries.js");
 const CustomNotFoundError = require("../../errors/CustomNotFoundError.js");
 
-function makeGetById(entity) {
+function makeGetById(entity, getByIdDatabaseFunction) {
     const capitalizedEntity = entity[0].toUpperCase() + entity.slice(1);
-    const methodName = "get" + capitalizedEntity + "ById";
 
     return async function (req, res) {
         const idParameter = entity + "Id";
@@ -14,7 +12,7 @@ function makeGetById(entity) {
             throw new CustomNotFoundError(capitalizedEntity + " not found");
         }
 
-        const entityRow = await db[methodName](id);
+        const entityRow = await getByIdDatabaseFunction(id);
         if (!entityRow) {
             throw new CustomNotFoundError(capitalizedEntity + " not found");
         }
