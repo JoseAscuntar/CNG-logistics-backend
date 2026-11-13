@@ -1,5 +1,10 @@
 const { Router } = require("express");
-const { getAllSuppliers, getSupplierById, createSupplier, editSupplier } = require("../controllers/supplierController.js");
+const {
+    getAllSuppliers,
+    getSupplierById,
+    createSupplier,
+    editSupplier,
+} = require("../controllers/supplierController.js");
 
 const supplierRouter = Router();
 

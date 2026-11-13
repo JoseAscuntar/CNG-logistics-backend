@@ -127,18 +127,18 @@ CREATE TABLE IF NOT EXISTS change_requests (
 `;
 
 async function main() {
-  console.log("Creating tables...");
-  const client = new Client({
-    connectionString: process.argv[2],
-  });
-  await client.connect();
-  await client.query(SQL);
-  await client.end();
-  console.log("Done");
+    console.log("Creating tables...");
+    const client = new Client({
+        connectionString: process.argv[2],
+    });
+    await client.connect();
+    await client.query(SQL);
+    await client.end();
+    console.log("Done");
 }
 
 if (process.argv[2] === undefined) {
-  console.log("Usage: node ./db/populatedb.js <Database URL>");
+    console.log("Usage: node ./db/populatedb.js <Database URL>");
 } else {
-  main();
+    main();
 }

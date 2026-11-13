@@ -1,5 +1,10 @@
 const { Router } = require("express");
-const { getAllUnits, getUnitById, createUnit, editUnit } = require("../controllers/unitController.js");
+const {
+    getAllUnits,
+    getUnitById,
+    createUnit,
+    editUnit,
+} = require("../controllers/unitController.js");
 
 const unitRouter = Router();
 

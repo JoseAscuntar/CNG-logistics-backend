@@ -1,5 +1,10 @@
 const { Router } = require("express");
-const { getAllLegalEntities, getLegalEntityById, createLegalEntity, editLegalEntity } = require("../controllers/legalEntityController.js");
+const {
+    getAllLegalEntities,
+    getLegalEntityById,
+    createLegalEntity,
+    editLegalEntity,
+} = require("../controllers/legalEntityController.js");
 
 const legalEntityRouter = Router();
 

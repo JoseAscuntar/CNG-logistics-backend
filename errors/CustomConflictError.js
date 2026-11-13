@@ -4,7 +4,7 @@ class CustomConflictError extends Error {
     constructor(message) {
         super(message);
         this.statusCode = CONFLICT;
-        this.name = 'ConflictError';
+        this.name = "ConflictError";
     }
 }
 

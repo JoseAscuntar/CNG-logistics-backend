@@ -1,5 +1,10 @@
 const { Router } = require("express");
-const { getAllClients, getClientById, createClient, editClient } = require("../controllers/clientController.js");
+const {
+    getAllClients,
+    getClientById,
+    createClient,
+    editClient,
+} = require("../controllers/clientController.js");
 
 const clientRouter = Router();
 

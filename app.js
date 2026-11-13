@@ -31,11 +31,13 @@ app.get("/", (req, res) => res.send("Hello, world!"));
 
 app.use((err, req, res, next) => {
     console.error(err);
-    res.status(err.statusCode || INTERNAL_SERVER_ERROR).json({message: err.message});
+    res.status(err.statusCode || INTERNAL_SERVER_ERROR).json({
+        message: err.message,
+    });
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, error => {
+app.listen(PORT, (error) => {
     if (error) {
         throw error;
     }

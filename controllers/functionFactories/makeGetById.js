@@ -16,9 +16,9 @@ function makeGetById(entity, getByIdDatabaseFunction) {
         if (!entityRow) {
             throw new CustomNotFoundError(capitalizedEntity + " not found");
         }
-        
+
         res.json(entityRow);
-    }
+    };
 }
 
 module.exports = makeGetById;

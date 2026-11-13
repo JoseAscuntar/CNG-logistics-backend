@@ -50,19 +50,18 @@ VALUES
 `;
 
 async function main() {
-  console.log("Seeding tables...");
-  const client = new Client({
-    connectionString: process.argv[2],
-  });
-  await client.connect();
-  await client.query(SQL);
-  await client.end();
-  console.log("Done");
+    console.log("Seeding tables...");
+    const client = new Client({
+        connectionString: process.argv[2],
+    });
+    await client.connect();
+    await client.query(SQL);
+    await client.end();
+    console.log("Done");
 }
 
 if (process.argv[2] === undefined) {
-  console.log("Usage: node ./db/seeddb.js <Database URL>");
+    console.log("Usage: node ./db/seeddb.js <Database URL>");
 } else {
-  main();
+    main();
 }
-

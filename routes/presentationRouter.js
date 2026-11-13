@@ -1,5 +1,10 @@
 const { Router } = require("express");
-const { getAllPresentations, getPresentationById, createPresentation, editPresentation } = require("../controllers/presentationController.js");
+const {
+    getAllPresentations,
+    getPresentationById,
+    createPresentation,
+    editPresentation,
+} = require("../controllers/presentationController.js");
 
 const presentationRouter = Router();
 
