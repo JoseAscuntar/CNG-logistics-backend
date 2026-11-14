@@ -13,6 +13,8 @@ const clientRouter = require("./routes/clientRouter.js");
 const unitRouter = require("./routes/unitRouter.js");
 const legalEntityRouter = require("./routes/legalEntityRouter.js");
 const { INTERNAL_SERVER_ERROR } = require("./constants/httpStatusCodes.js");
+const presentationContractRouter = require("./routes/presentationContractRouter.js");
+const supplierPresentationRouter = require("./routes/supplierPresentationRouter.js");
 
 app.use(express.json());
 
@@ -26,6 +28,8 @@ app.use("/contracts", contractRouter);
 app.use("/clients", clientRouter);
 app.use("/units", unitRouter);
 app.use("/legal-entities", legalEntityRouter);
+app.use("/presentation-contracts", presentationContractRouter);
+app.use("/supplier-presentations", supplierPresentationRouter);
 
 app.get("/", (req, res) => res.send("Hello, world!"));
 
