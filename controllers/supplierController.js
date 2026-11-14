@@ -9,7 +9,11 @@ const { UNIQUE_VIOLATION } = require("../constants/postgresErrorCodes.js");
 const { INTEGER_MAX } = require("../constants/limits.js");
 
 const getAllSuppliers = makeGetAll(db.getAllSuppliers);
-const getSupplierById = makeGetById("supplier", db.getSupplierById);
+const getSupplierById = makeGetById(
+    "supplier",
+    db.getSupplierById,
+    "Proveedor no encontrado",
+);
 
 const validateSupplier = [
     body("name")
@@ -121,7 +125,7 @@ const editSupplier = [
     async (req, res) => {
         const id = Number(req.params.supplierId);
         if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
-            throw new CustomNotFoundError("Supplier not found");
+            throw new CustomNotFoundError("Proveedor no encontrado");
         }
 
         const errors = validationResult(req);
@@ -135,7 +139,7 @@ const editSupplier = [
                 id,
             );
             if (!updatedSupplier) {
-                throw new CustomNotFoundError("Supplier not found");
+                throw new CustomNotFoundError("Proveedor no encontrado");
             }
             return res.status(OK).json(updatedSupplier);
         } catch (err) {

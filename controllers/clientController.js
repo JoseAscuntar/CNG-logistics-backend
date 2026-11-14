@@ -9,7 +9,11 @@ const { UNIQUE_VIOLATION } = require("../constants/postgresErrorCodes.js");
 const { INTEGER_MAX } = require("../constants/limits.js");
 
 const getAllClients = makeGetAll(db.getAllClients);
-const getClientById = makeGetById("client", db.getClientById);
+const getClientById = makeGetById(
+    "client",
+    db.getClientById,
+    "Cliente no encontrado",
+);
 
 const validateClient = [
     body("name")
@@ -136,7 +140,7 @@ const editClient = [
     async (req, res) => {
         const id = Number(req.params.clientId);
         if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
-            throw new CustomNotFoundError("Client not found");
+            throw new CustomNotFoundError("Cliente no encontrado");
         }
 
         const errors = validationResult(req);
@@ -147,7 +151,7 @@ const editClient = [
         try {
             const updatedClient = await db.updateClient(matchedData(req), id);
             if (!updatedClient) {
-                throw new CustomNotFoundError("Client not found");
+                throw new CustomNotFoundError("Cliente no encontrado");
             }
             return res.status(OK).json(updatedClient);
         } catch (err) {

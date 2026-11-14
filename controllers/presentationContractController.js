@@ -16,6 +16,7 @@ const getAllPresentationContracts = makeGetAll(db.getAllPresentationContracts);
 const getPresentationContractById = makeGetById(
     "presentationContract",
     db.getPresentationContractById,
+    "Precio de venta no encontrado",
 );
 
 const validatePresentationContractCreate = [
@@ -84,7 +85,7 @@ const editPresentationContract = [
     async (req, res) => {
         const id = Number(req.params.presentationContractId);
         if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
-            throw new CustomNotFoundError("Presentation-Contract not found");
+            throw new CustomNotFoundError("Precio de venta no encontrado");
         }
 
         const errors = validationResult(req);
@@ -97,7 +98,7 @@ const editPresentationContract = [
             id,
         );
         if (!updatedPresentationContract) {
-            throw new CustomNotFoundError("Presentation-Contract not found");
+            throw new CustomNotFoundError("Precio de venta no encontrado");
         }
         return res.status(OK).json(updatedPresentationContract);
     },

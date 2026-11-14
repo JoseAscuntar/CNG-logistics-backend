@@ -16,6 +16,7 @@ const getAllSupplierPresentations = makeGetAll(db.getAllSupplierPresentations);
 const getSupplierPresentationById = makeGetById(
     "supplierPresentation",
     db.getSupplierPresentationById,
+    "Precio de compra no encontrado",
 );
 
 const validateSupplierPresentationCreate = [
@@ -82,7 +83,7 @@ const editSupplierPresentation = [
     async (req, res) => {
         const id = Number(req.params.supplierPresentationId);
         if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
-            throw new CustomNotFoundError("Supplier-Presentation not found");
+            throw new CustomNotFoundError("Precio de compra no encontrado");
         }
 
         const errors = validationResult(req);
@@ -95,7 +96,7 @@ const editSupplierPresentation = [
             id,
         );
         if (!updatedSupplierPresentation) {
-            throw new CustomNotFoundError("Supplier-Presentation not found");
+            throw new CustomNotFoundError("Precio de compra no encontrado");
         }
         return res.status(OK).json(updatedSupplierPresentation);
     },

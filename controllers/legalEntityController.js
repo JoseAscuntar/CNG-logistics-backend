@@ -9,7 +9,11 @@ const { UNIQUE_VIOLATION } = require("../constants/postgresErrorCodes.js");
 const { INTEGER_MAX } = require("../constants/limits.js");
 
 const getAllLegalEntities = makeGetAll(db.getAllLegalEntities);
-const getLegalEntityById = makeGetById("legalEntity", db.getLegalEntityById);
+const getLegalEntityById = makeGetById(
+    "legalEntity",
+    db.getLegalEntityById,
+    "Figura jurídica no encontrada",
+);
 
 const validateLegalEntity = [
     body("name")
@@ -61,7 +65,7 @@ const editLegalEntity = [
     async (req, res) => {
         const id = Number(req.params.legalEntityId);
         if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
-            throw new CustomNotFoundError("Legal Entity not found");
+            throw new CustomNotFoundError("Figura jurídica no encontrada");
         }
 
         const errors = validationResult(req);
@@ -75,7 +79,7 @@ const editLegalEntity = [
                 id,
             );
             if (!updatedLegalEntity) {
-                throw new CustomNotFoundError("Legal Entity not found");
+                throw new CustomNotFoundError("Figura jurídica no encontrada");
             }
             return res.status(OK).json(updatedLegalEntity);
         } catch (err) {

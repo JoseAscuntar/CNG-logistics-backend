@@ -7,7 +7,11 @@ const { BAD_REQUEST, CREATED, OK } = require("../constants/httpStatusCodes.js");
 const { INTEGER_MAX } = require("../constants/limits.js");
 
 const getAllProducts = makeGetAll(db.getAllProducts);
-const getProductById = makeGetById("product", db.getProductById);
+const getProductById = makeGetById(
+    "product",
+    db.getProductById,
+    "Producto no encontrado",
+);
 
 const validateProduct = [
     body("name")
@@ -39,7 +43,7 @@ const editProduct = [
     async (req, res) => {
         const id = Number(req.params.productId);
         if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
-            throw new CustomNotFoundError("Product not found");
+            throw new CustomNotFoundError("Producto no encontrado");
         }
 
         const errors = validationResult(req);
@@ -49,7 +53,7 @@ const editProduct = [
 
         const updatedProduct = await db.updateProduct(matchedData(req), id);
         if (!updatedProduct) {
-            throw new CustomNotFoundError("Product not found");
+            throw new CustomNotFoundError("Producto no encontrado");
         }
         return res.status(OK).json(updatedProduct);
     },

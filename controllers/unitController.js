@@ -9,7 +9,7 @@ const { UNIQUE_VIOLATION } = require("../constants/postgresErrorCodes.js");
 const { INTEGER_MAX } = require("../constants/limits.js");
 
 const getAllUnits = makeGetAll(db.getAllUnits);
-const getUnitById = makeGetById("unit", db.getUnitById);
+const getUnitById = makeGetById("unit", db.getUnitById, "Unidad no encontrada");
 
 const validateUnit = [
     body("name")
@@ -50,7 +50,7 @@ const editUnit = [
     async (req, res) => {
         const id = Number(req.params.unitId);
         if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
-            throw new CustomNotFoundError("Unit not found");
+            throw new CustomNotFoundError("Unidad no encontrada");
         }
 
         const errors = validationResult(req);
@@ -61,7 +61,7 @@ const editUnit = [
         try {
             const updatedUnit = await db.updateUnit(matchedData(req), id);
             if (!updatedUnit) {
-                throw new CustomNotFoundError("Unit not found");
+                throw new CustomNotFoundError("Unidad no encontrada");
             }
             return res.status(OK).json(updatedUnit);
         } catch (err) {

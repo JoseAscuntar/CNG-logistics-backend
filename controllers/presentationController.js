@@ -9,7 +9,11 @@ const { BAD_REQUEST, CREATED, OK } = require("../constants/httpStatusCodes.js");
 const { FOREIGN_KEY_VIOLATION } = require("../constants/postgresErrorCodes.js");
 
 const getAllPresentations = makeGetAll(db.getAllPresentations);
-const getPresentationById = makeGetById("presentation", db.getPresentationById);
+const getPresentationById = makeGetById(
+    "presentation",
+    db.getPresentationById,
+    "Presentación no encontrada",
+);
 
 const validatePresentation = [
     body("product_id")
@@ -70,7 +74,7 @@ const editPresentation = [
     async (req, res) => {
         const id = Number(req.params.presentationId);
         if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
-            throw new CustomNotFoundError("Presentation not found");
+            throw new CustomNotFoundError("Presentación no encontrada");
         }
 
         const errors = validationResult(req);
@@ -84,7 +88,7 @@ const editPresentation = [
                 id,
             );
             if (!updatedPresentation) {
-                throw new CustomNotFoundError("Presentation not found");
+                throw new CustomNotFoundError("Presentación no encontrada");
             }
             return res.status(OK).json(updatedPresentation);
         } catch (err) {

@@ -9,7 +9,11 @@ const { FOREIGN_KEY_VIOLATION } = require("../constants/postgresErrorCodes.js");
 const { INTEGER_MAX } = require("../constants/limits.js");
 
 const getAllContracts = makeGetAll(db.getAllContracts);
-const getContractById = makeGetById("contract", db.getContractById);
+const getContractById = makeGetById(
+    "contract",
+    db.getContractById,
+    "Contrato no encontrado",
+);
 
 const validateContract = [
     body("name")
@@ -66,7 +70,7 @@ const editContract = [
     async (req, res) => {
         const id = Number(req.params.contractId);
         if (!Number.isInteger(id) || id <= 0 || id > INTEGER_MAX) {
-            throw new CustomNotFoundError("Contract not found");
+            throw new CustomNotFoundError("Contrato no encontrado");
         }
 
         const errors = validationResult(req);
@@ -80,7 +84,7 @@ const editContract = [
                 id,
             );
             if (!updatedContract) {
-                throw new CustomNotFoundError("Contract not found");
+                throw new CustomNotFoundError("Contrato no encontrado");
             }
             return res.status(OK).json(updatedContract);
         } catch (err) {
