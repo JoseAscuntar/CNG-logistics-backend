@@ -12,9 +12,10 @@ const contractRouter = require("./routes/contractRouter.js");
 const clientRouter = require("./routes/clientRouter.js");
 const unitRouter = require("./routes/unitRouter.js");
 const legalEntityRouter = require("./routes/legalEntityRouter.js");
-const { INTERNAL_SERVER_ERROR } = require("./constants/httpStatusCodes.js");
 const presentationContractRouter = require("./routes/presentationContractRouter.js");
 const supplierPresentationRouter = require("./routes/supplierPresentationRouter.js");
+const { INTERNAL_SERVER_ERROR } = require("./constants/httpStatusCodes.js");
+const CustomNotFoundError = require("./errors/CustomNotFoundError.js");
 
 app.use(express.json());
 
@@ -33,11 +34,21 @@ app.use("/supplier-presentations", supplierPresentationRouter);
 
 app.get("/", (req, res) => res.send("Hello, world!"));
 
+app.use((req, res) => {
+    throw new CustomNotFoundError("No se encontró esta ruta");
+});
+
 app.use((err, req, res, next) => {
     console.error(err);
-    res.status(err.statusCode || INTERNAL_SERVER_ERROR).json({
-        message: err.message,
-    });
+    if (err.statusCode) {
+        res.status(err.statusCode).json({
+            message: err.message,
+        });
+    } else {
+        res.status(INTERNAL_SERVER_ERROR).json({
+            message: "Error interno del servidor",
+        });
+    }
 });
 
 const PORT = process.env.PORT || 3000;
