@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS presentation_contracts (
 CREATE TABLE IF NOT EXISTS change_requests (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   requested_by INTEGER NOT NULL,
-  requested_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  requested_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   entity VARCHAR(30) NOT NULL,
   entity_id INTEGER,
   action VARCHAR(20) NOT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS change_requests (
   old_value TEXT,
   status VARCHAR(20) NOT NULL,
   decided_by INTEGER,
-  decided_at TIMESTAMP,
+  decided_at TIMESTAMPTZ,
   reason TEXT,
 
   CONSTRAINT valid_entities CHECK (entity IN ('users', 'suppliers', 'products', 'units', 'presentations', 'clients', 'contracts', 'legal_entities', 'supplier_presentations', 'presentation_contracts')),
