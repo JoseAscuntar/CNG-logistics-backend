@@ -37,7 +37,7 @@ const createUnit = [
         } catch (err) {
             if (err.code === UNIQUE_VIOLATION) {
                 throw new CustomConflictError(
-                    "Ya existe una unidad con ese nombre",
+                    "Ya existe una unidad con este nombre",
                 );
             }
             throw err;

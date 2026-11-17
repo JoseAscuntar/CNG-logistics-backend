@@ -32,7 +32,7 @@ const validateSupplierPresentationCreate = [
 
     body("buying_price")
         .isInt({ min: 1, max: INTEGER_MAX })
-        .withMessage("Es obligatorio seleccionar un precio de compra")
+        .withMessage("Es obligatorio escribir un precio de compra válido")
         .toInt(),
 ];
 
@@ -74,7 +74,7 @@ const createSupplierPresentation = [
 const validateSupplierPresentationEdit = [
     body("buying_price")
         .isInt({ min: 1, max: INTEGER_MAX })
-        .withMessage("Es obligatorio seleccionar un precio de compra")
+        .withMessage("Es obligatorio escribir un precio de compra válido")
         .toInt(),
 ];
 

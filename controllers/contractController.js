@@ -29,7 +29,7 @@ const validateContract = [
 
     body("legal_entity_id")
         .isInt({ min: 1, max: INTEGER_MAX })
-        .withMessage("Es obligatorio seleccionar una entidad legal válida")
+        .withMessage("Es obligatorio seleccionar una figura jurídica válida")
         .toInt(),
 
     body("client_id")
@@ -52,7 +52,7 @@ const createContract = [
             if (err.code === FOREIGN_KEY_VIOLATION) {
                 if (err.constraint === "contracts_to_legal_entity") {
                     throw new CustomBadRequestError(
-                        "La entidad legal seleccionada no existe",
+                        "La figura jurídica seleccionada no existe",
                     );
                 } else if (err.constraint === "contracts_to_client") {
                     throw new CustomBadRequestError(
@@ -91,7 +91,7 @@ const editContract = [
             if (err.code === FOREIGN_KEY_VIOLATION) {
                 if (err.constraint === "contracts_to_legal_entity") {
                     throw new CustomBadRequestError(
-                        "La entidad legal seleccionada no existe",
+                        "La figura jurídica seleccionada no existe",
                     );
                 } else if (err.constraint === "contracts_to_client") {
                     throw new CustomBadRequestError(

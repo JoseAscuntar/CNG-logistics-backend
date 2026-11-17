@@ -32,7 +32,7 @@ const validatePresentationContractCreate = [
 
     body("selling_price")
         .isInt({ min: 1, max: INTEGER_MAX })
-        .withMessage("Es obligatorio seleccionar un precio de venta")
+        .withMessage("Es obligatorio escribir un precio de venta válido")
         .toInt(),
 ];
 
@@ -76,7 +76,7 @@ const createPresentationContract = [
 const validatePresentationContractEdit = [
     body("selling_price")
         .isInt({ min: 1, max: INTEGER_MAX })
-        .withMessage("Es obligatorio seleccionar un precio de venta")
+        .withMessage("Es obligatorio escribir un precio de venta válido")
         .toInt(),
 ];
 

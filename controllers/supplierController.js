@@ -112,7 +112,7 @@ const createSupplier = [
         } catch (err) {
             if (err.code === UNIQUE_VIOLATION) {
                 throw new CustomConflictError(
-                    "Ya existe un proveedor con ese NIT",
+                    "Ya existe un proveedor con este NIT",
                 );
             }
             throw err;
@@ -145,7 +145,7 @@ const editSupplier = [
         } catch (err) {
             if (err.code === UNIQUE_VIOLATION) {
                 throw new CustomConflictError(
-                    "Ya existe un proveedor con ese NIT",
+                    "Ya existe un proveedor con este NIT",
                 );
             }
             throw err;

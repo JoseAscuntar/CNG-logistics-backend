@@ -52,7 +52,7 @@ const createLegalEntity = [
         } catch (err) {
             if (err.code === UNIQUE_VIOLATION) {
                 throw new CustomConflictError(
-                    "Ya existe una figura jurídica con ese NIT",
+                    "Ya existe una figura jurídica con este NIT",
                 );
             }
             throw err;
@@ -85,7 +85,7 @@ const editLegalEntity = [
         } catch (err) {
             if (err.code === UNIQUE_VIOLATION) {
                 throw new CustomConflictError(
-                    "Ya existe una figura jurídica con ese NIT",
+                    "Ya existe una figura jurídica con este NIT",
                 );
             }
             throw err;

@@ -110,7 +110,7 @@ const validateClient = [
             "El porcentaje de reposición debe ser válido (un número positivo)",
         )
         .isFloat({ max: 100 })
-        .withMessage("El porcentaje de reposición debe ser menor a 100")
+        .withMessage("El porcentaje de reposición no puede ser mayor a 100")
         .toFloat(),
 ];
 
@@ -127,7 +127,7 @@ const createClient = [
         } catch (err) {
             if (err.code === UNIQUE_VIOLATION) {
                 throw new CustomConflictError(
-                    "Ya existe un cliente con ese NIT",
+                    "Ya existe un cliente con este NIT",
                 );
             }
             throw err;
@@ -157,7 +157,7 @@ const editClient = [
         } catch (err) {
             if (err.code === UNIQUE_VIOLATION) {
                 throw new CustomConflictError(
-                    "Ya existe un cliente con ese NIT",
+                    "Ya existe un cliente con este NIT",
                 );
             }
             throw err;
