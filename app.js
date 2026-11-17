@@ -41,7 +41,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
     if (err.type === "entity.parse.failed") {
         res.status(BAD_REQUEST).json({
-            message: "El request debe ser un JSON válido",
+            message: "Los datos enviados deben ser un JSON válido",
         });
     } else if (err.statusCode) {
         res.status(err.statusCode).json({
