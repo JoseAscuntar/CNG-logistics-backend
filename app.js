@@ -14,7 +14,10 @@ const unitRouter = require("./routes/unitRouter.js");
 const legalEntityRouter = require("./routes/legalEntityRouter.js");
 const presentationContractRouter = require("./routes/presentationContractRouter.js");
 const supplierPresentationRouter = require("./routes/supplierPresentationRouter.js");
-const { INTERNAL_SERVER_ERROR } = require("./constants/httpStatusCodes.js");
+const {
+    INTERNAL_SERVER_ERROR,
+    BAD_REQUEST,
+} = require("./constants/httpStatusCodes.js");
 const CustomNotFoundError = require("./errors/CustomNotFoundError.js");
 
 app.use(express.json());
@@ -40,7 +43,11 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
     console.error(err);
-    if (err.statusCode) {
+    if (err.type === "entity.parse.failed") {
+        res.status(BAD_REQUEST).json({
+            message: "El request debe ser un JSON válido",
+        });
+    } else if (err.statusCode) {
         res.status(err.statusCode).json({
             message: err.message,
         });
