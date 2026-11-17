@@ -1,6 +1,3 @@
-const { loadEnvFile } = require("node:process");
-loadEnvFile();
-
 const express = require("express");
 const cors = require("cors");
 
