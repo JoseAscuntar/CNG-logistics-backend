@@ -7,6 +7,9 @@
         "start": "node app.js",
         "dev": "node --watch --env-file=.env app.js"
     },
+    "engines": {
+        "node": "24.x"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/JoseAscuntar/CNG-logistics-backend.git"
