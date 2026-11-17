@@ -39,7 +39,6 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-    console.error(err);
     if (err.type === "entity.parse.failed") {
         res.status(BAD_REQUEST).json({
             message: "El request debe ser un JSON válido",
@@ -49,6 +48,7 @@ app.use((err, req, res, next) => {
             message: err.message,
         });
     } else {
+        console.error(err);
         res.status(INTERNAL_SERVER_ERROR).json({
             message: "Error interno del servidor",
         });
